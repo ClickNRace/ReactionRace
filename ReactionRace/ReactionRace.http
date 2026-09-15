@@ -1,0 +1,6 @@
+@ReactionRace_HostAddress = http://localhost:5212
+
+GET {{ReactionRace_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

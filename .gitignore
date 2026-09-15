@@ -1,0 +1,34 @@
+# Сборочные артефакты
+bin/
+obj/
+out/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Логи
+*.log
+
+# Конфиги с секретами (базовый appsettings.json оставляем в репо)
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.pfx
+
+# Docker
+docker-compose.override.yml
+
+# Тестовые артефакты
+TestResults/
+coverage.cobertura.xml
+*.trx
+
+# OS-мусор
+.DS_Store
+Thumbs.db
