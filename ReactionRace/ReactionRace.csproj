@@ -1,29 +1,16 @@
-name: CI ASP.NET 10
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
-on:
-push:
-branches: [ "main" ]
-pull_request:
-branches: [ "main" ]
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
 
-jobs:
-build:
-runs-on: ubuntu-latest
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+  </ItemGroup>
 
-steps:
-- name: Checkout
-uses: actions/checkout@v4
-
-- name: Setup .NET
-uses: actions/setup-dotnet@v4
-with:
-dotnet-version: "10.0.x"
-
-- name: Restore
-run: dotnet restore ReactionRace.slnx
-
-- name: Build
-run: dotnet build ReactionRace.slnx --configuration Release --no-restore
-
-- name: Test
-run: dotnet test ReactionRace.slnx --configuration Release --no-build --verbosity normal
+</Project>
