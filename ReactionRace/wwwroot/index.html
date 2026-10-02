@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Reaction Race — тест кликов</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2rem;
+        }
+
+        button {
+            font-size: 2rem;
+            padding: 1rem 3rem;
+            cursor: pointer;
+        }
+
+        #log {
+            margin-top: 1rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .status-open {
+            color: green;
+        }
+
+        .status-closed {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reaction Race — тест</h1>
+    <p>Статус соединения: <span id="status" class="status-closed">не подключено</span></p>
+    <button id="clickBtn">КЛИК</button>
+    <div id="log"></div>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const logEl = document.getElementById('log');
+        const btn = document.getElementById('clickBtn');
+
+        function log(message) {
+            const time = new Date().toISOString().split('T')[1];
+            logEl.textContent = `[${time}] ${message}\n` + logEl.textContent;
+        }
+
+        // адрес подставь свой — порт смотри в launchSettings.json или в консоли при запуске сервера
+        const socket = new WebSocket('ws://localhost:5212/ws');
+
+        socket.onopen = () => {
+            statusEl.textContent = 'подключено';
+            statusEl.className = 'status-open';
+            log('Соединение открыто');
+        };
+
+        socket.onclose = () => {
+            statusEl.textContent = 'отключено';
+            statusEl.className = 'status-closed';
+            log('Соединение закрыто');
+        };
+
+        socket.onerror = (err) => {
+            log('Ошибка: ' + JSON.stringify(err));
+        };
+
+        socket.onmessage = (event) => {
+            log('Получено от сервера: ' + event.data);
+        };
+
+        btn.addEventListener('click', () => {
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({ type: 'click' }));
+                log('Отправлено: click');
+            } else {
+                log('Соединение не готово, состояние: ' + socket.readyState);
+            }
+        });
+    </script>
+</body>
+</html>
